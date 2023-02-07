@@ -12,11 +12,16 @@
 </head>
 <body>
 <div id="app">
-    <form>
-        <label for="add-todo">Add Todo Title</label><br>
-        <input type="text" id="add-todo" placeholder="example: go for a walk"><br>
-        <button type="submit">Add</button>
-    </form>
+<!--    <form>-->
+<!--        <label for="add-todo">Add Todo-Title</label><br>-->
+<!--        <input v-model="todo.title" type="text" id="add-todo" placeholder="Title"><br>-->
+<!--        <button @click.prevent="createTodo">Add</button>-->
+<!--    </form>-->
+    <div class="container">
+        <div class="column column1">
+            <todo-list :todos="todos"></todo-list>
+        </div>
+    </div>
 </div>
 </body>
 </html>
