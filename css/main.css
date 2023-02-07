@@ -45,3 +45,19 @@ li {
 .none {
     display: none;
 }
+
+.todo-list {
+    font-weight: bolder;
+}
+
+p {
+    padding: 5px;
+}
+
+h2 {
+    font-size: 1.3em;
+}
+
+.btn-task-add {
+    width: 18px;
+}

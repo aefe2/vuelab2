@@ -15,11 +15,11 @@
 <!--    <form>-->
 <!--        <label for="add-todo">Add Todo-Title</label><br>-->
 <!--        <input v-model="todo.title" type="text" id="add-todo" placeholder="Title"><br>-->
-<!--        <button @click.prevent="createTodo">Add</button>-->
+<!--        <button @click.prevent="createTodo" :class="{disabled: column1.notes.length === 3}>Add</button>-->
 <!--    </form>-->
     <div class="container">
         <div class="column column1">
-            <todo-list :todos="todos"></todo-list>
+            <todo-list></todo-list>
         </div>
     </div>
 </div>
