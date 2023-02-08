@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -12,14 +13,21 @@
 </head>
 <body>
 <div id="app">
-<!--    <form>-->
-<!--        <label for="add-todo">Add Todo-Title</label><br>-->
-<!--        <input v-model="todo.title" type="text" id="add-todo" placeholder="Title"><br>-->
-<!--        <button @click.prevent="createTodo" :class="{disabled: column1.notes.length === 3}>Add</button>-->
-<!--    </form>-->
+    <form @click.prevent>
+        <label>Create New Todo</label><br>
+        <input v-model="todo.title" type="text" placeholder="title"><br>
+        <input v-model="todo.task" type="text" placeholder="task">
+        <button @click="addTask" class="btn">Add</button>
+    </form>
     <div class="container">
-        <div class="column column1">
-            <todo-list></todo-list>
+        <div class="column1 column">
+            <todo-list :first-col="firstCol"></todo-list>
+        </div>
+        <div class="column2 column">
+            <todo-list :second-col="secondCol"></todo-list>
+        </div>
+        <div class="column3 column">
+            <todo-list :third-col="thirdCol"></todo-list>
         </div>
     </div>
 </div>

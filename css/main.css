@@ -1,11 +1,7 @@
 * {
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-}
-
-body {
-    font-family: "Montserrat Thin";
-    font-weight: 1000;
 }
 
 .container {
@@ -21,7 +17,8 @@ body {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    border: rgba(0, 0, 0, 0.25) 1px solid;
+    border: rgba(0, 0, 0, 0.26) 1px solid;
+    box-shadow: inset rgba(0, 0, 0, 0.2);
     border-radius: 30px;
     min-width: 100px;
 }
@@ -46,18 +43,20 @@ li {
     display: none;
 }
 
-.todo-list {
-    font-weight: bolder;
-}
-
 p {
     padding: 5px;
 }
 
 h2 {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .btn-task-add {
     width: 18px;
+}
+.todo-item {
+    border: 1px solid grey;
+    border-radius: 15px;
+    box-shadow: aqua inset 0 0 10px;
+    padding: 5px;
 }
