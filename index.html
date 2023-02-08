@@ -13,12 +13,27 @@
 </head>
 <body>
 <div id="app">
-    <form @click.prevent class="create-form">
-        <label>Create New Todo</label><br>
-        <input v-model="todo.title" type="text" placeholder="title"><br>
-        <input v-model="todo.task" type="text" placeholder="task">
-        <button @click="addTask" class="btn">Append</button>
+    <form class="create-form">
+        <label>Create New Todo</label>
+        <input v-model="todo.title" type="text" placeholder="title">
+        <label class="task-count-label">Tasks count</label>
+
+        <div class="radios">
+            <label>4</label>
+            <input v-model="radioValue" type="radio" value="4" name="radio-btn">
+            <label>5</label>
+            <input v-model="radioValue" type="radio" value="5" name="radio-btn">
+        </div>
+
+        <input v-model="todo.task" type="text" placeholder="task - 1">
+        <input v-model="todo.task2" type="text" placeholder="task - 2">
+        <input v-model="todo.task3" type="text" placeholder="task - 3">
+        <input v-show="radioValue >= 4" v-model="todo.task4" type="text" placeholder="task - 4">
+        <input v-show="radioValue == 5" v-model="todo.task5" type="text" placeholder="task - 5">
+
+        <button @click.prevent="addTodo" class="btn">Append</button>
     </form>
+
     <div class="container">
         <div class="column1 column">
             <todo-list :first-col="firstCol"></todo-list>
