@@ -13,22 +13,16 @@
 </head>
 <body>
 <div id="app">
-    <form @click.prevent>
+    <form @click.prevent class="create-form">
         <label>Create New Todo</label><br>
         <input v-model="todo.title" type="text" placeholder="title"><br>
         <input v-model="todo.task" type="text" placeholder="task">
-        <button @click="addTask" class="btn">Add</button>
+        <button @click="addTask" class="btn">Append</button>
     </form>
     <div class="container">
         <div class="column1 column">
-            <todo-list :first-col="firstCol" v-on:delete-task="deleteTask"></todo-list>
+            <todo-list :first-col="firstCol"></todo-list>
         </div>
-<!--        <div class="column2 column">-->
-<!--            <todo-list :second-col="secondCol"></todo-list>-->
-<!--        </div>-->
-<!--        <div class="column3 column">-->
-<!--            <todo-list :third-col="thirdCol"></todo-list>-->
-<!--        </div>-->
     </div>
 </div>
 </body>

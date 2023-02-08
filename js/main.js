@@ -7,16 +7,14 @@ Vue.component('todo-list', {
     },
     template: `
     <div class="todo-card">
-        <li class="todo-item" v-for="(todo, id) in firstCol" :key="todo.id">
+        <li class="todo-item" v-for="(todo, key) in firstCol" :key="todo.key">
             <p>{{ todo.title }}</p>
-            <p>{{ todo.task }}</p><button @click="deleteTask(firstCol)">Delete</button>
+            <p>{{ todo.task }}</p><button @click="$delete(firstCol, key)">Delete</button>
         </li>
     </div>
     `,
     methods: {
-        deleteTask(firstCol) {
-            this.$emit('delete-todo', firstCol)
-        }
+        
     }
 })
 
@@ -32,10 +30,6 @@ let app = new Vue({
         thirdCol: []
     },
     methods: {
-        deleteTask(firstCol) {
-            const todoIndex = this.todo.indexOf(firstCol);
-            this.todo.splice(todoIndex, 1);
-        },
         addTask() {
             if (this.todo.title && this.todo.task) {
                 if (this.firstCol.length < 3) {
@@ -43,7 +37,7 @@ let app = new Vue({
                         title: this.todo.title,
                         task: this.todo.task
                     })
-                } else alert('Чел...')
+                }
             }
             this.todo.title = '';
             this.todo.task = '';
