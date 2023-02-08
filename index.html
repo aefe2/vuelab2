@@ -21,14 +21,14 @@
     </form>
     <div class="container">
         <div class="column1 column">
-            <todo-list :first-col="firstCol"></todo-list>
+            <todo-list :first-col="firstCol" v-on:delete-task="deleteTask"></todo-list>
         </div>
-        <div class="column2 column">
-            <todo-list :second-col="secondCol"></todo-list>
-        </div>
-        <div class="column3 column">
-            <todo-list :third-col="thirdCol"></todo-list>
-        </div>
+<!--        <div class="column2 column">-->
+<!--            <todo-list :second-col="secondCol"></todo-list>-->
+<!--        </div>-->
+<!--        <div class="column3 column">-->
+<!--            <todo-list :third-col="thirdCol"></todo-list>-->
+<!--        </div>-->
     </div>
 </div>
 </body>
