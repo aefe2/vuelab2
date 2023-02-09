@@ -43,14 +43,6 @@ li {
     display: none;
 }
 
-p {
-    padding: 5px;
-}
-
-h2 {
-    font-size: 1.2em;
-}
-
 .btn-task-add {
     width: 18px;
 }
@@ -60,7 +52,7 @@ h2 {
     border-radius: 15px;
     /*box-shadow: aqua inset 0 0 10px;*/
     box-shadow: inset rgba(170, 0, 255, 0.29) 0 0 10px;
-    padding: 10px;
+    padding: 20px;
     margin: 10px;
 }
 
@@ -116,5 +108,18 @@ form > input {
 }
 
 .task-count-label {
+    margin-top: 10px;
+}
+
+.todo-title {
+
+    font-weight: 700;
+}
+.todo-tasks {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.todo-tasks > span {
     margin-top: 10px;
 }
