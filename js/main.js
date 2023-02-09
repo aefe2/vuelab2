@@ -1,86 +1,89 @@
 Vue.component('todo-list', {
     props: {
-        firstCol: {
+        todos: {
             type: Array,
-            required: true
-        }
+        },
     },
     template: `
     <div class="todo-card">
-        <li v-for="(todo, key) in firstCol" :key="todo.key" class="todo-item">
         <div class="todo-title">
-            <span>{{ todo.title }}</span>
+            <span>{{ tasks.title }}</span>
         </div>
-        <div class="todo-tasks">
-            <span>{{ todo.task }}</span>
-            <span>{{ todo.task2 }}</span>
-            <span>{{ todo.task3 }}</span>
-            <span>{{ todo.task4 }}</span>
-            <span>{{ todo.task5 }}</span>
+        <div v-for="(elem, key) in todos.tasks" :key="key" class="todo-tasks">
+            <div class="task">
+                <span class="task-data">{{ elem.task }}<input type="checkbox"></span>
+            </div>
+<!--            <div class="add-task">-->
+<!--                <input type="text">-->
+<!--            </div>-->
         </div>
-            <button class="delete-btn" @click="$delete(firstCol, key)">Delete</button>
-        </li>
+<!--        <button class="delete-btn" @click="$delete(item, key)">Delete</button>-->
     </div>
     `,
-    methods: {},
-
+    methods: {}
 })
 
 let app = new Vue({
     el: '#app',
     data: {
         radioValue: null,
-        todo: {
+        todos: [{
             title: '',
-            task: '',
-            task2: '',
-            task3: '',
-            task4: '',
-            task5: '',
-        },
+            tasks: [
+                {
+                    task: 'Unholy confessions',
+                    isDone: false
+                },
+                {
+                    task: 'Stricken',
+                    isDone: false
+                },
+                {
+                    task: '123',
+                    isDone: false
+                },
+            ],
+            isDoneCount: 0
+        }],
+        newTitle: '',
+        newTask1: '',
+        newTask2: '',
+        newTask3: '',
+        newTask4: '',
+        newTask5: '',
+        newIsDone: false,
         firstCol: [],
         secondCol: [],
         thirdCol: []
     },
     methods: {
         addTodo() {
-            if (this.radioValue == null) {
-                if (this.firstCol.length < 3) {
-                    this.firstCol.push({
-                        title: this.todo.title,
-                        task: this.todo.task,
-                        task2: this.todo.task2,
-                        task3: this.todo.task3,
+            if (this.firstCol.length < 3) {
+                if (this.newTitle && this.newTask1 && this.newTask2 && this.newTask3) {
+                    this.todos.push({
+                        title: this.newTitle,
+                        tasks: [
+                            {
+                                task: this.newTask1,
+                                isDone: false
+                            },
+                            {
+                                task: this.newTask2,
+                                isDone: false
+                            },
+                            {
+                                task: this.newTask3,
+                                isDone: false
+                            },
+                        ],
+                        isDoneCount: 0
                     })
-                    this.todo.title = '';
-                    this.todo.task = '';
-                }
-            } else if (this.radioValue == '4') {
-                if (this.firstCol.length < 3) {
-                    this.firstCol.push({
-                        title: this.todo.title,
-                        task: this.todo.task,
-                        task2: this.todo.task2,
-                        task3: this.todo.task3,
-                        task4: this.todo.task4,
-                    })
-                    this.todo.title = '';
-                    this.todo.task = '';
-                }
-            } else if (this.radioValue == '5') {
-                if (this.firstCol.length < 3) {
-                    this.firstCol.push({
-                        title: this.todo.title,
-                        task: this.todo.task,
-                        task2: this.todo.task2,
-                        task3: this.todo.task3,
-                        task4: this.todo.task4,
-                        task5: this.todo.task5,
-                    })
-                    this.todo.title = '';
-                    this.todo.task = '';
                 }
             }
+            this.title = '';
+            this.newTask1 = '';
+            this.newTask2 = '';
+            this.newTask3 = '';
         }
     }
 })
