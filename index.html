@@ -13,34 +13,7 @@
 </head>
 <body>
 <div id="app">
-    <form class="create-form">
-        <label>Create New Todo</label>
-        <input v-model="newTitle" type="text" placeholder="title">
-        <!--        <label class="task-count-label">Tasks count</label>-->
-
-        <!--        <div class="radios">-->
-        <!--            <label v-show="radioValue >= 4">3</label>-->
-        <!--            <input v-show="radioValue >= 4" v-model="radioValue" type="radio" value="3" name="radio-btn">-->
-        <!--            <label>4</label>-->
-        <!--            <input v-model="radioValue" type="radio" value="4" name="radio-btn">-->
-        <!--            <label>5</label>-->
-        <!--            <input v-model="radioValue" type="radio" value="5" name="radio-btn">-->
-        <!--        </div>-->
-
-        <input v-model="newTask1" type="text" placeholder="task - 1">
-        <input v-model="newTask2" type="text" placeholder="task - 2">
-        <input v-model="newTask3" type="text" placeholder="task - 3">
-<!--        <input v-show="radioValue >= 4" v-model="todo.tasks" type="text" placeholder="task - 4">-->
-<!--        <input v-show="radioValue == 5" v-model="todo.tasks" type="text" placeholder="task - 5">-->
-
-        <button @click.prevent="addTodo" class="btn">Add</button>
-    </form>
-
-    <div class="container">
-        <div class="column1 column">
-            <todo-list :todos="todos"></todo-list>
-        </div>
-    </div>
+    <container></container>
 </div>
 </body>
 </html>
