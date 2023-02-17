@@ -117,17 +117,24 @@ Vue.component('note', {
         eventBus.$on('update-checkbox', updCheckbox => {
             let doneCount = 0;
             let notDoneCount = 0;
+            let allTasksCount = 0;
             for (let task in this.note.tasks) {
-                if (task.isDone) {
+                allTasksCount++;
+                if (task.isDone === true) {
                     doneCount++;
                 } else {
                     notDoneCount++;
                 }
             }
-            this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-            console.log(doneCount)
-            console.log(notDoneCount)
-            console.log(this.note.doneNum)
+            console.log(doneCount, ' doneCount')
+            console.log(allTasksCount, ' all')
+            // this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
+            if (doneCount === allTasksCount) {
+                // if (this.note.status === 1) {
+                //
+                // }]
+                this.thirdCol.push(this.note)
+            }
         })
     },
     template: `
@@ -154,9 +161,9 @@ Vue.component('task', {
         return {}
     },
     methods: {
-        handleCounter() {
-            eventBus.$emit('checkbox', this.isDone)
-        },
+        // handleCounter() {
+        //     eventBus.$emit('checkbox', this.isDone)
+        // },
         updateCounter() {
             eventBus.$emit('update-checkbox', this.isDone)
         }
@@ -177,9 +184,7 @@ Vue.component('task', {
     <div>
         {{ task.taskTitle }}
         <input v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">
-<!--        {{ task.isDone }}-->
-    </div>
-    `,
+    </div>`,
 })
 
 Vue.component('create-form', {
@@ -189,7 +194,8 @@ Vue.component('create-form', {
             taskTitle1: null,
             taskTitle2: null,
             taskTitle3: null,
-            isDone: null
+            isDone: null,
+            status: 0,
         };
     },
     methods: {
@@ -210,7 +216,8 @@ Vue.component('create-form', {
                             taskTitle: this.taskTitle3,
                             isDone: false
                         },
-                    ]
+                    ],
+                    status: 1
                 }
                 eventBus.$emit('on-submit', createNote);
                 this.title = '';
