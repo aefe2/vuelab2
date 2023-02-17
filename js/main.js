@@ -12,10 +12,10 @@ Vue.component('container', {
     template: `
 <div>
     <create-form></create-form>
-    <div class="columns">
-        <column1 :firstCol="firstCol"></column1>
-        <column2 :secondCol="secondCol"></column2>
-        <column3 :thirdCol="thirdCol"></column3>
+    <div class="container">
+        <column1 class="column column1" :firstCol="firstCol"></column1>
+        <column2 class="column column2" :secondCol="secondCol"></column2>
+        <column3 class="column column3" :thirdCol="thirdCol"></column3>
     </div>
 </div>
     `,
@@ -59,7 +59,7 @@ Vue.component('column2', {
     },
     template: `
      <div>
-        <note v-for="note in secondCol" :note="note">
+        <note v-for="(note, key) in secondCol" :key="key" :note="note">
             
         </note>
     </div>
@@ -78,7 +78,7 @@ Vue.component('column3', {
     },
     template: `
      <div>
-        <note v-for="note in thirdCol" :note="note">
+        <note v-for="(note, key) in thirdCol" :key="key" :note="note">
             
         </note>
     </div>
@@ -94,7 +94,8 @@ Vue.component('note', {
     data() {
         return {
             taskTitle: null,
-            isDone: false
+            isDone: false,
+            doneNum: 0
         }
     },
     methods: {
@@ -105,20 +106,41 @@ Vue.component('note', {
                     isDone: false
                 }
                 this.note.tasks.push(createTask);
+                this.taskTitle = '';
             }
-        }
+        },
+    },
+    mounted() {
+        // eventBus.$on('checkbox', updateCounter => {
+        //     this.note.tasks.isDone = !this.note.tasks.isDone;
+        // })
+        eventBus.$on('update-checkbox', updCheckbox => {
+            let doneCount = 0;
+            let notDoneCount = 0;
+            for (let task in this.note.tasks) {
+                if (task.isDone) {
+                    doneCount++;
+                } else {
+                    notDoneCount++;
+                }
+            }
+            this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
+            console.log(doneCount)
+            console.log(notDoneCount)
+            console.log(this.note.doneNum)
+        })
     },
     template: `
-    <div class="todo-card">
+    <div class="todo-card todo-item">
         <div class="todo-title">
             <span>{{ note.title }}</span>
         </div>
-        <task v-for="task in note.tasks" :task="task"></task>
+        <task v-for="(task, key) in note.tasks" :key="key" :task="task"></task>
         <form v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
-            <input v-model="taskTitle" type="text">
-            <input type="submit" value="+"> 
+            <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
+            <input class="" type="submit" value="+"> 
         </form>
-<!--        <button class="delete-btn" @click="$delete(item, key)">Delete</button>-->
+        <button class="delete-btn" @click="deleteTask()">Delete</button>
     </div>`,
 })
 
@@ -126,16 +148,36 @@ Vue.component('task', {
     props: {
         task: {
             type: Object
-        }
+        },
     },
     data() {
         return {}
     },
-    methods: {},
+    methods: {
+        handleCounter() {
+            eventBus.$emit('checkbox', this.isDone)
+        },
+        updateCounter() {
+            eventBus.$emit('update-checkbox', this.isDone)
+        }
+        // counter() {
+        //     let doneCount = 0;
+        //     let notDoneCount = 0;
+        //     for (let elem in this.task) {
+        //         if (elem.isDone) {
+        //             doneCount += 1;
+        //         } else notDoneCount += 1;
+        //     }
+        //     this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
+        //     console.log(this.doneNum)
+        //     console.log(notDoneCount)
+        // }
+    },
     template: `
     <div>
         {{ task.taskTitle }}
-        {{ task.isDone }}
+        <input v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">
+<!--        {{ task.isDone }}-->
     </div>
     `,
 })
@@ -240,33 +282,33 @@ let app = new Vue({
         // // thirdCol: []
     },
     methods: {
-        addTodo() {
-            if (this.firstCol.length < 3) {
-                if (this.newTitle && this.newTask1 && this.newTask2 && this.newTask3) {
-                    this.todos.push({
-                        title: this.newTitle,
-                        tasks: [
-                            {
-                                task: this.newTask1,
-                                isDone: false
-                            },
-                            {
-                                task: this.newTask2,
-                                isDone: false
-                            },
-                            {
-                                task: this.newTask3,
-                                isDone: false
-                            },
-                        ],
-                        isDoneCount: 0
-                    })
-                }
-            }
-            this.title = '';
-            this.newTask1 = '';
-            this.newTask2 = '';
-            this.newTask3 = '';
-        }
+        // addTodo() {
+        //     if (this.firstCol.length < 3) {
+        //         if (this.newTitle && this.newTask1 && this.newTask2 && this.newTask3) {
+        //             this.todos.push({
+        //                 title: this.newTitle,
+        //                 tasks: [
+        //                     {
+        //                         task: this.newTask1,
+        //                         isDone: false
+        //                     },
+        //                     {
+        //                         task: this.newTask2,
+        //                         isDone: false
+        //                     },
+        //                     {
+        //                         task: this.newTask3,
+        //                         isDone: false
+        //                     },
+        //                 ],
+        //                 isDoneCount: 0
+        //             })
+        //         }
+        //     }
+        //     this.title = '';
+        //     this.newTask1 = '';
+        //     this.newTask2 = '';
+        //     this.newTask3 = '';
+        // }
     }
 })

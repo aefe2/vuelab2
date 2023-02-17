@@ -116,7 +116,6 @@ form > input {
 }
 
 .todo-title {
-
     font-weight: 700;
 }
 .todo-tasks {
@@ -126,4 +125,10 @@ form > input {
 }
 .todo-tasks > span {
     margin-top: 10px;
+}
+
+.task-title-input {
+    border-radius: 20px;
+    border: 1px solid #808080;
+    padding: 5px;
 }
