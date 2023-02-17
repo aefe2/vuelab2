@@ -8,6 +8,14 @@ Vue.component('container', {
             thirdCol: []
         }
     },
+    mounted() {
+        eventBus.$on('movecolumn', (idNote, note) => {
+            if (this.firstCol[idNote].doneNum > 50) {
+                this.secondCol.push(this.firstCol[idNote])
+                this.firstCol.splice(idNote, 1)
+            }
+        })
+    },
     methods: {},
     template: `
 <div>
@@ -37,10 +45,11 @@ Vue.component('column1', {
                 this.firstCol.push(createNote)
             }
         })
+
     },
     template: `
      <div>
-        <note v-for="(note, key) in firstCol" :key="note.key" :note="note">
+        <note v-for="(note, key) in firstCol" :firstCol="firstCol" :key="note.key" :idNote="key" :note="note">
             
         </note>
     </div>
@@ -57,9 +66,11 @@ Vue.component('column2', {
     data() {
         return {}
     },
+    mounted() {
+    },
     template: `
      <div>
-        <note v-for="(note, key) in secondCol" :key="key" :note="note">
+        <note v-for="(note, index) in secondCol" :secondCol="secondCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -78,7 +89,7 @@ Vue.component('column3', {
     },
     template: `
      <div>
-        <note v-for="(note, key) in thirdCol" :key="key" :note="note">
+        <note v-for="(note, key) in thirdCol" :thirdCol="thirdCol" :key="note.key" :idNote="key" :note="note">
             
         </note>
     </div>
@@ -90,6 +101,9 @@ Vue.component('note', {
         note: {
             type: Object,
         },
+        idNote: {
+            type: Number,
+        }
     },
     data() {
         return {
@@ -109,16 +123,20 @@ Vue.component('note', {
                 this.taskTitle = '';
             }
         },
+        // deleteTask()
+        // {
+        //     eventBus.$emit('delNote', )
+        // }
     },
     mounted() {
         // eventBus.$on('checkbox', updateCounter => {
         //     this.note.tasks.isDone = !this.note.tasks.isDone;
         // })
-        eventBus.$on('update-checkbox', updCheckbox => {
+        eventBus.$on('update-checkbox', idNote => {
             let doneCount = 0;
             let notDoneCount = 0;
             let allTasksCount = 0;
-            for (let task in this.note.tasks) {
+            for (let task of this.note.tasks) {
                 allTasksCount++;
                 if (task.isDone === true) {
                     doneCount++;
@@ -126,15 +144,16 @@ Vue.component('note', {
                     notDoneCount++;
                 }
             }
-            console.log(doneCount, ' doneCount')
-            console.log(allTasksCount, ' all')
-            // this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-            if (doneCount === allTasksCount) {
-                // if (this.note.status === 1) {
-                //
-                // }]
-                this.thirdCol.push(this.note)
-            }
+            this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
+            eventBus.$emit('movecolumn', idNote, this.note);
+
+            // this.note.doneNum = 0
+            // if (doneCount === allTasksCount) {
+            //     // if (this.note.status === 1) {
+            //     //
+            //     // }]
+            //     this.thirdCol.push(this.note)
+            // }
         })
     },
     template: `
@@ -142,12 +161,12 @@ Vue.component('note', {
         <div class="todo-title">
             <span>{{ note.title }}</span>
         </div>
-        <task v-for="(task, key) in note.tasks" :key="key" :task="task"></task>
+        <task v-for="(task, key) in note.tasks" :key="key" :task="task" :idNote="idNote"></task>
         <form v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
             <input class="" type="submit" value="+"> 
         </form>
-        <button class="delete-btn" @click="deleteTask()">Delete</button>
+        <button class="delete-btn" @click="deleteNote()">Delete</button>
     </div>`,
 })
 
@@ -156,6 +175,9 @@ Vue.component('task', {
         task: {
             type: Object
         },
+        idNote: {
+            type: Number,
+        }
     },
     data() {
         return {}
@@ -165,7 +187,8 @@ Vue.component('task', {
         //     eventBus.$emit('checkbox', this.isDone)
         // },
         updateCounter() {
-            eventBus.$emit('update-checkbox', this.isDone)
+            this.task.isDone = !this.task.isDone
+            eventBus.$emit('update-checkbox', this.idNote)
         }
         // counter() {
         //     let doneCount = 0;
@@ -182,8 +205,10 @@ Vue.component('task', {
     },
     template: `
     <div>
-        {{ task.taskTitle }}
-        <input v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">
+    {{ task.taskTitle }}
+    <button :class="{done: task.isDone}"  type="text"  @click="updateCounter()" id="checkbox">done</button>
+        
+<!--        <input value="true" v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">-->
     </div>`,
 })
 
@@ -217,7 +242,7 @@ Vue.component('create-form', {
                             isDone: false
                         },
                     ],
-                    status: 1
+                    status: 1,
                 }
                 eventBus.$emit('on-submit', createNote);
                 this.title = '';
