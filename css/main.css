@@ -118,11 +118,13 @@ form > input {
 .todo-title {
     font-weight: 700;
 }
+
 .todo-tasks {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
+
 .todo-tasks > span {
     margin-top: 10px;
 }
@@ -131,8 +133,18 @@ form > input {
     border-radius: 20px;
     border: 1px solid #808080;
     padding: 5px;
+    width: 100px;
 }
 
 .done {
     background: green;
 }
+
+.add-task-form {
+    display: flex;
+}
+
+.done-btn {
+    padding: 2px;
+}
+

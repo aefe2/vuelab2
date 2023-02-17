@@ -10,7 +10,7 @@ Vue.component('container', {
     },
     mounted() {
         eventBus.$on('movecolumn', (idNote, note) => {
-            if (this.firstCol[idNote].doneNum > 50) {
+            if (this.firstCol[idNote].doneNum >= 50) {
                 this.secondCol.push(this.firstCol[idNote])
                 this.firstCol.splice(idNote, 1)
             }
@@ -162,11 +162,11 @@ Vue.component('note', {
             <span>{{ note.title }}</span>
         </div>
         <task v-for="(task, key) in note.tasks" :key="key" :task="task" :idNote="idNote"></task>
-        <form v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
+        <form class="add-task-form" v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
-            <input class="" type="submit" value="+"> 
+            <input class="submit-btn" type="submit" value="+"> 
         </form>
-        <button class="delete-btn" @click="deleteNote()">Delete</button>
+<!--        <button class="delete-btn" @click="deleteNote()">Delete</button>-->
     </div>`,
 })
 
@@ -206,7 +206,7 @@ Vue.component('task', {
     template: `
     <div>
     {{ task.taskTitle }}
-    <button :class="{done: task.isDone}"  type="text"  @click="updateCounter()" id="checkbox">done</button>
+    <button :class="{done: task.isDone}" class="done-btn" type="text"  @click="updateCounter()" id="checkbox">Done</button>
         
 <!--        <input value="true" v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">-->
     </div>`,
