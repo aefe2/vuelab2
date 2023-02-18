@@ -4,6 +4,7 @@
     padding: 0;
 }
 
+
 .container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -133,10 +134,10 @@ form > input {
     border-radius: 20px;
     border: 1px solid #808080;
     padding: 5px;
-    width: 100px;
 }
 
 .done {
+
     background: green;
 }
 

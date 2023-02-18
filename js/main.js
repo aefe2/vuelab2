@@ -9,10 +9,16 @@ Vue.component('container', {
         }
     },
     mounted() {
-        eventBus.$on('movecolumn', (idNote, note) => {
+        eventBus.$on('move-column2', (idNote, note) => {
             if (this.firstCol[idNote].doneNum >= 50) {
                 this.secondCol.push(this.firstCol[idNote])
                 this.firstCol.splice(idNote, 1)
+            }
+        });
+        eventBus.$on('move-column3', (idNote, note) => {
+            if (this.secondCol[idNote].doneNum === 100) {
+                this.thirdCol.push(this.secondCol[idNote])
+                this.secondCol.splice(idNote, 1)
             }
         })
     },
@@ -49,7 +55,7 @@ Vue.component('column1', {
     },
     template: `
      <div>
-        <note v-for="(note, key) in firstCol" :firstCol="firstCol" :key="note.key" :idNote="key" :note="note">
+        <note v-for="(note, index) in firstCol" :firstCol="firstCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -89,7 +95,7 @@ Vue.component('column3', {
     },
     template: `
      <div>
-        <note v-for="(note, key) in thirdCol" :thirdCol="thirdCol" :key="note.key" :idNote="key" :note="note">
+        <note v-for="(note, index) in thirdCol" :thirdCol="thirdCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -123,15 +129,9 @@ Vue.component('note', {
                 this.taskTitle = '';
             }
         },
-        // deleteTask()
-        // {
-        //     eventBus.$emit('delNote', )
-        // }
+
     },
     mounted() {
-        // eventBus.$on('checkbox', updateCounter => {
-        //     this.note.tasks.isDone = !this.note.tasks.isDone;
-        // })
         eventBus.$on('update-checkbox', idNote => {
             let doneCount = 0;
             let notDoneCount = 0;
@@ -145,15 +145,8 @@ Vue.component('note', {
                 }
             }
             this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-            eventBus.$emit('movecolumn', idNote, this.note);
-
-            // this.note.doneNum = 0
-            // if (doneCount === allTasksCount) {
-            //     // if (this.note.status === 1) {
-            //     //
-            //     // }]
-            //     this.thirdCol.push(this.note)
-            // }
+            if (this.note.doneNum > 100) eventBus.$emit('move-column2', idNote, this.note);
+            if (this.note.doneNum === 100) eventBus.$emit('move-column3', idNote, this.note);
         })
     },
     template: `
@@ -166,7 +159,6 @@ Vue.component('note', {
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
             <input class="submit-btn" type="submit" value="+"> 
         </form>
-<!--        <button class="delete-btn" @click="deleteNote()">Delete</button>-->
     </div>`,
 })
 
@@ -183,32 +175,15 @@ Vue.component('task', {
         return {}
     },
     methods: {
-        // handleCounter() {
-        //     eventBus.$emit('checkbox', this.isDone)
-        // },
         updateCounter() {
             this.task.isDone = !this.task.isDone
             eventBus.$emit('update-checkbox', this.idNote)
         }
-        // counter() {
-        //     let doneCount = 0;
-        //     let notDoneCount = 0;
-        //     for (let elem in this.task) {
-        //         if (elem.isDone) {
-        //             doneCount += 1;
-        //         } else notDoneCount += 1;
-        //     }
-        //     this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-        //     console.log(this.doneNum)
-        //     console.log(notDoneCount)
-        // }
     },
     template: `
     <div>
-    {{ task.taskTitle }}
-    <button :class="{done: task.isDone}" class="done-btn" type="text"  @click="updateCounter()" id="checkbox">Done</button>
-        
-<!--        <input value="true" v-model="task.isDone" @click="updateCounter()" id="checkbox" type="checkbox">-->
+        <span class="task-title">{{ task.taskTitle }}</span>
+        <button :class="{ done: task.isDone }" class="done-btn" @click="updateCounter()" id="checkbox">Done</button>
     </div>`,
 })
 
@@ -256,24 +231,9 @@ Vue.component('create-form', {
     <form class="create-form" @submit.prevent="onSubmit">
         <label>Create New Todo</label>
         <input v-model="title" type="text" placeholder="title">
-        
-        <!--        <label class="task-count-label">Tasks count</label>-->
-        <!--        <div class="radios">-->
-        <!--            <label v-show="radioValue >= 4">3</label>-->
-        <!--            <input v-show="radioValue >= 4" v-model="radioValue" type="radio" value="3" name="radio-btn">-->
-        <!--            <label>4</label>-->
-        <!--            <input v-model="radioValue" type="radio" value="4" name="radio-btn">-->
-        <!--            <label>5</label>-->
-        <!--            <input v-model="radioValue" type="radio" value="5" name="radio-btn">-->
-        <!--        </div>-->
-
         <input v-model="taskTitle1" type="text" placeholder="task - 1">
         <input v-model="taskTitle2" type="text" placeholder="task - 2">
         <input v-model="taskTitle3" type="text" placeholder="task - 3">
-        
-<!--        <input v-show="radioValue >= 4" v-model="todo.tasks" type="text" placeholder="task - 4">-->
-<!--        <input v-show="radioValue == 5" v-model="todo.tasks" type="text" placeholder="task - 5">-->
-
         <input type="submit" value="Create">
     </form>
     `,
@@ -282,65 +242,6 @@ Vue.component('create-form', {
 
 let app = new Vue({
     el: '#app',
-    data: {
-        // radioValue: null,
-        // todos: {
-        //     title: '55',
-        //     tasks: [
-        //         {
-        //             task: 'Unholy confessions',
-        //             isDone: false
-        //         },
-        //         {
-        //             task: 'Stricken',
-        //             isDone: false
-        //         },
-        //         {
-        //             task: '123',
-        //             isDone: false
-        //         },
-        //     ],
-        //     isDoneCount: 0
-        // },
-        // newTitle: '',
-        // newTask1: '',
-        // newTask2: '',
-        // newTask3: '',
-        // newTask4: '',
-        // newTask5: '',
-        // newIsDone: false,
-        // // firstCol: [],
-        // // secondCol: [],
-        // // thirdCol: []
-    },
-    methods: {
-        // addTodo() {
-        //     if (this.firstCol.length < 3) {
-        //         if (this.newTitle && this.newTask1 && this.newTask2 && this.newTask3) {
-        //             this.todos.push({
-        //                 title: this.newTitle,
-        //                 tasks: [
-        //                     {
-        //                         task: this.newTask1,
-        //                         isDone: false
-        //                     },
-        //                     {
-        //                         task: this.newTask2,
-        //                         isDone: false
-        //                     },
-        //                     {
-        //                         task: this.newTask3,
-        //                         isDone: false
-        //                     },
-        //                 ],
-        //                 isDoneCount: 0
-        //             })
-        //         }
-        //     }
-        //     this.title = '';
-        //     this.newTask1 = '';
-        //     this.newTask2 = '';
-        //     this.newTask3 = '';
-        // }
-    }
+    data: {},
+    methods: {}
 })
