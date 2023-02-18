@@ -4,6 +4,9 @@
     padding: 0;
 }
 
+body {
+    height: 100vh;
+}
 
 .container {
     display: grid;
@@ -81,7 +84,7 @@ li {
     background-color: whitesmoke;
 }
 
-.create-form > button:hover {
+.create-form > input[type="submit"]:hover {
     background-color: rgba(170, 0, 255, 0.29);
     transition-duration: .3s;
 }
@@ -103,11 +106,6 @@ li {
     background-color: rgba(199, 197, 197, 0.29);
 }
 
-.done-btn:hover {
-    color: green;
-    background-color: rgba(199, 197, 197, 0.29);
-}
-
 form > input {
     margin-top: 10px;
 }
@@ -117,6 +115,7 @@ form > input {
 }
 
 .todo-title {
+    word-break: break-word;
     font-weight: 700;
 }
 
@@ -134,18 +133,51 @@ form > input {
     border-radius: 20px;
     border: 1px solid #808080;
     padding: 5px;
+    width: 120px;
+    margin-right: 5px;
 }
 
-.done {
+.submit-btn {
+    border-radius: 20px;
+    border: 1px solid #808080;
+    background-color: whitesmoke;
+    width: 20px;
+}
 
-    background: green;
+.submit-btn:hover {
+    background-color: rgba(170, 0, 255, 0.29);
+    transition-duration: .3s;
 }
 
 .add-task-form {
     display: flex;
 }
 
+.task {
+    display: flex;
+    align-items: center;
+    margin: 5px 10px 5px 5px;
+}
+
+.task-title {
+    margin: 0 10px 0 0;
+    word-break: break-word;
+
+}
+
 .done-btn {
-    padding: 2px;
+    background-color: whitesmoke;
+    margin-right: auto;
+    border-radius: 20px;
+    border: 1px solid #808080;
+    padding: 5px;
+}
+
+.done-btn:hover {
+    transition-duration: .3s;
+    margin-right: auto;
+    border-radius: 20px;
+    border: 1px solid #808080;
+    padding: 5px;
 }
 

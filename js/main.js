@@ -145,7 +145,7 @@ Vue.component('note', {
                 }
             }
             this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-            if (this.note.doneNum > 100) eventBus.$emit('move-column2', idNote, this.note);
+            if (this.note.doneNum < 100) eventBus.$emit('move-column2', idNote, this.note);
             if (this.note.doneNum === 100) eventBus.$emit('move-column3', idNote, this.note);
         })
     },
@@ -157,7 +157,7 @@ Vue.component('note', {
         <task v-for="(task, key) in note.tasks" :key="key" :task="task" :idNote="idNote"></task>
         <form class="add-task-form" v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
-            <input class="submit-btn" type="submit" value="+"> 
+            <input class="submit-btn" type="submit" value="+">
         </form>
     </div>`,
 })
@@ -181,9 +181,12 @@ Vue.component('task', {
         }
     },
     template: `
-    <div>
+    <div class="task">
         <span class="task-title">{{ task.taskTitle }}</span>
-        <button :class="{ done: task.isDone }" class="done-btn" @click="updateCounter()" id="checkbox">Done</button>
+        <button :class="{done: task.isDone}" 
+        class="done-btn" 
+        :disabled="task.isDone" 
+        @click="updateCounter()">Done</button>
     </div>`,
 })
 
@@ -229,7 +232,7 @@ Vue.component('create-form', {
     },
     template: `
     <form class="create-form" @submit.prevent="onSubmit">
-        <label>Create New Todo</label>
+        <label>Create Todo</label>
         <input v-model="title" type="text" placeholder="title">
         <input v-model="taskTitle1" type="text" placeholder="task - 1">
         <input v-model="taskTitle2" type="text" placeholder="task - 2">
