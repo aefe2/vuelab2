@@ -157,6 +157,7 @@ form > input {
     display: flex;
     align-items: center;
     margin: 5px 10px 5px 5px;
+
 }
 
 .task-title {
@@ -173,11 +174,31 @@ form > input {
     padding: 5px;
 }
 
+.done-btn:disabled {
+    border: 1px solid rgba(128, 128, 128, 0.39);
+}
+
+.done-btn:disabled:hover {
+    background-color: #f5f5f5;
+    border-color: #c9c9c9;
+}
+
 .done-btn:hover {
     transition-duration: .3s;
     margin-right: auto;
     border-radius: 20px;
     border: 1px solid #808080;
     padding: 5px;
+    background-color: rgba(27, 253, 1, 0.29);
 }
 
+.date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+    border: 1px solid grey;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: inset rgba(204, 204, 203, 0.25) 0 0 10px;
+}

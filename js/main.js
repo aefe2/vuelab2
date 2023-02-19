@@ -13,9 +13,18 @@ Vue.component('container', {
             let timeData = new Date();
             this.secondCol[idNote].time = timeData.getHours() + ':' + timeData.getMinutes();
             this.secondCol[idNote].date = timeData.getDate() + '.' + timeData.getMonth() + '.' + timeData.getFullYear();
-        }
+        },
     },
     mounted() {
+        if (localStorage.firstCol) {
+            this.firstCol = JSON.parse(localStorage.firstCol)
+        }
+        if (localStorage.secondCol) {
+            this.secondCol = JSON.parse(localStorage.secondCol)
+        }
+        if (localStorage.thirdCol) {
+            this.thirdCol = JSON.parse(localStorage.thirdCol)
+        }
         eventBus.$on('move-column2', (idNote, note) => {
             if (this.firstCol[idNote].doneNum >= 50) {
                 this.secondCol.push(this.firstCol[idNote])
@@ -56,9 +65,16 @@ Vue.component('column1', {
         eventBus.$on('on-submit', createNote => {
             if (this.firstCol.length < 3) {
                 this.firstCol.push(createNote)
+                this.save()
             }
         })
-
+    },
+    methods: {
+        save() {
+            localStorage.firstCol = JSON.stringify(this.firstCol)
+            localStorage.secondCol = JSON.stringify(this.secondCol)
+            localStorage.thirdCol = JSON.stringify(this.thirdCol)
+        },
     },
     template: `
      <div>
@@ -136,7 +152,6 @@ Vue.component('note', {
                 this.taskTitle = '';
             }
         },
-
     },
     mounted() {
         eventBus.$on('update-checkbox', idNote => {
@@ -167,8 +182,8 @@ Vue.component('note', {
             <input class="submit-btn" type="submit" value="+">
         </form>
         <div class="date" v-if="note.date">
-            <span>Date: {{ note.date }}</span>
-            <span>Time: {{ note.time }}</span>
+            <span>Date - {{ note.date }}</span>
+            <span>Time - {{ note.time }}</span>
         </div>
     </div>`,
 })
@@ -239,7 +254,7 @@ Vue.component('create-form', {
                 this.taskTitle2 = '';
                 this.taskTitle3 = '';
             }
-        }
+        },
     },
     template: `
     <form class="create-form" @submit.prevent="onSubmit">
@@ -257,5 +272,4 @@ Vue.component('create-form', {
 let app = new Vue({
     el: '#app',
     data: {},
-    methods: {}
 })
