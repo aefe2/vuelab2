@@ -8,6 +8,13 @@ Vue.component('container', {
             thirdCol: []
         }
     },
+    methods: {
+        time(idNote) {
+            let timeData = new Date();
+            this.secondCol[idNote].time = timeData.getHours() + ':' + timeData.getMinutes();
+            this.secondCol[idNote].date = timeData.getDate() + '.' + timeData.getMonth() + '.' + timeData.getFullYear();
+        }
+    },
     mounted() {
         eventBus.$on('move-column2', (idNote, note) => {
             if (this.firstCol[idNote].doneNum >= 50) {
@@ -17,21 +24,21 @@ Vue.component('container', {
         });
         eventBus.$on('move-column3', (idNote, note) => {
             if (this.secondCol[idNote].doneNum === 100) {
+                this.time(idNote)
                 this.thirdCol.push(this.secondCol[idNote])
                 this.secondCol.splice(idNote, 1)
             }
         })
     },
-    methods: {},
     template: `
-<div>
-    <create-form></create-form>
-    <div class="container">
-        <column1 class="column column1" :firstCol="firstCol"></column1>
-        <column2 class="column column2" :secondCol="secondCol"></column2>
-        <column3 class="column column3" :thirdCol="thirdCol"></column3>
+    <div>
+        <create-form></create-form>
+        <div class="container">
+            <column1 class="column column1" :firstCol="firstCol"></column1>
+            <column2 class="column column2" :secondCol="secondCol"></column2>
+            <column3 class="column column3" :thirdCol="thirdCol"></column3>
+        </div>
     </div>
-</div>
     `,
 })
 
@@ -159,6 +166,10 @@ Vue.component('note', {
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
             <input class="submit-btn" type="submit" value="+">
         </form>
+        <div class="date" v-if="note.date">
+            <span>Date: {{ note.date }}</span>
+            <span>Time: {{ note.time }}</span>
+        </div>
     </div>`,
 })
 
