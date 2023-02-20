@@ -100,11 +100,14 @@ Vue.component('column2', {
     data() {
         return {}
     },
-    mounted() {
+    methods: {
+        save() {
+            localStorage.secondCol = JSON.stringify(this.secondCol)
+        }
     },
     template: `
      <div>
-        <note v-for="(note, index) in secondCol" :secondCol="secondCol" :key="note.key" :idNote="index" :note="note">
+        <note v-for="(note, index) in secondCol" @save="save()" :secondCol="secondCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -121,9 +124,14 @@ Vue.component('column3', {
     data() {
         return {}
     },
+    methods: {
+        save() {
+            localStorage.thirdCol = JSON.stringify(this.thirdCol)
+        }
+    },
     template: `
      <div>
-        <note v-for="(note, index) in thirdCol" :thirdCol="thirdCol" :key="note.key" :idNote="index" :note="note">
+        <note v-for="(note, index) in thirdCol" @save="save()" :thirdCol="thirdCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -183,7 +191,7 @@ Vue.component('note', {
             <span>{{ note.title }}</span>
         </div>
         <task v-for="(task, key) in note.tasks" :key="key" :task="task" :idNote="idNote"></task>
-        <form class="add-task-form" v-show="this.note.tasks.length < 5" @submit.prevent="addTask">
+        <form class="add-task-form" v-show="this.note.tasks.length < 5 && this.note.doneNum !== 100" @submit.prevent="addTask">
             <input class="task-title-input" placeholder="new task" v-model="taskTitle" type="text">
             <input class="submit-btn" type="submit" value="+">
         </form>
