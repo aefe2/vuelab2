@@ -5,7 +5,7 @@ Vue.component('container', {
         return {
             firstCol: [],
             secondCol: [],
-            thirdCol: []
+            thirdCol: [],
         }
     },
     methods: {
@@ -38,7 +38,7 @@ Vue.component('container', {
                     this.save()
                 }
             } else {
-
+                this.idNote.isDisabled = false
             }
         });
         eventBus.$on('move-column3', (idNote, note) => {
@@ -150,9 +150,6 @@ Vue.component('note', {
         idNote: {
             type: Number,
         },
-        secondCol: {
-            type: Array
-        }
     },
     data() {
         return {
@@ -188,7 +185,7 @@ Vue.component('note', {
                 }
             }
             this.note.doneNum = (doneCount / (doneCount + notDoneCount)) * 100;
-            if (this.note.doneNum < 100) eventBus.$emit('move-column2', idNote, this.note);
+            if (this.note.doneNum > 50) eventBus.$emit('move-column2', idNote, this.note);
             if (this.note.doneNum === 100) eventBus.$emit('move-column3', idNote, this.note);
         })
     },
@@ -219,7 +216,9 @@ Vue.component('task', {
         }
     },
     data() {
-        return {}
+        return {
+            isDisabled: false
+        }
     },
     methods: {
         updateCounter() {
@@ -227,12 +226,15 @@ Vue.component('task', {
             eventBus.$emit('update-checkbox', this.idNote)
         }
     },
+    mounted() {
+
+    },
     template: `
     <div class="task">
         <span class="task-title">{{ task.taskTitle }}</span>
         <button :class="{done: task.isDone}" 
         class="done-btn" 
-        :disabled="task.isDone"
+        :disabled="task.isDone || isDisabled"
         @click="updateCounter()">Done</button>
     </div>`,
 })
