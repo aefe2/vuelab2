@@ -202,7 +202,14 @@ form > input {
     padding: 10px;
     box-shadow: inset rgba(204, 204, 203, 0.25) 0 0 10px;
 }
-
+.disabled:before {
+    transition-duration: 1.5s;
+    content: 'locked for editing';
+    color: rgba(232, 12, 12, 0.82);
+    margin: auto;
+}
 .disabled {
+    transition-duration: 1s;
+    box-shadow: inset rgba(232, 12, 12, 0.82) 0 0 30px;
     pointer-events: none;
 }
