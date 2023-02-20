@@ -37,9 +37,10 @@ Vue.component('container', {
                     this.firstCol.splice(idNote, 1)
                     this.save()
                 }
-            } else {
-                this.idNote.isDisabled = false
             }
+            // } else if (this.secondCol.length === 5) {
+            //    
+            // }
         });
         eventBus.$on('move-column3', (idNote, note) => {
             if (this.secondCol[idNote].doneNum === 100) {
@@ -54,7 +55,7 @@ Vue.component('container', {
     <div>
         <create-form></create-form>
         <div class="container">
-            <column1 class="column column1" :firstCol="firstCol"></column1>
+            <column1 :class="{ disabled: secondCol.length === 5 }" class="column column1" :firstCol="firstCol"></column1>
             <column2 class="column column2" :secondCol="secondCol"></column2>
             <column3 class="column column3" :thirdCol="thirdCol"></column3>
         </div>
@@ -67,7 +68,7 @@ Vue.component('column1', {
         firstCol: {
             type: Array,
             required: true
-        }
+        },
     },
     data() {
         return {}
@@ -213,12 +214,10 @@ Vue.component('task', {
         },
         idNote: {
             type: Number,
-        }
+        },
     },
     data() {
-        return {
-            isDisabled: false
-        }
+        return {}
     },
     methods: {
         updateCounter() {
@@ -233,9 +232,12 @@ Vue.component('task', {
     <div class="task">
         <span class="task-title">{{ task.taskTitle }}</span>
         <button :class="{done: task.isDone}" 
-        class="done-btn" 
-        :disabled="task.isDone || isDisabled"
+        class="done-btn"
+        :disabled="task.isDone"
         @click="updateCounter()">Done</button>
+<!--        <button v-show="task.isDone" -->
+<!--        class="undone-btn"-->
+<!--        @click="updateCounter()">Undone</button>-->
     </div>`,
 })
 

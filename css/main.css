@@ -202,3 +202,7 @@ form > input {
     padding: 10px;
     box-shadow: inset rgba(204, 204, 203, 0.25) 0 0 10px;
 }
+
+.disabled {
+    pointer-events: none;
+}
