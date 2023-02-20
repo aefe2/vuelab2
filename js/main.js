@@ -9,6 +9,11 @@ Vue.component('container', {
         }
     },
     methods: {
+        save() {
+            localStorage.firstCol = JSON.stringify(this.firstCol)
+            localStorage.secondCol = JSON.stringify(this.secondCol)
+            localStorage.thirdCol = JSON.stringify(this.thirdCol)
+        },
         time(idNote) {
             let timeData = new Date();
             this.secondCol[idNote].time = timeData.getHours() + ':' + timeData.getMinutes();
@@ -29,6 +34,7 @@ Vue.component('container', {
             if (this.firstCol[idNote].doneNum >= 50) {
                 this.secondCol.push(this.firstCol[idNote])
                 this.firstCol.splice(idNote, 1)
+                this.save()
             }
         });
         eventBus.$on('move-column3', (idNote, note) => {
@@ -36,6 +42,7 @@ Vue.component('container', {
                 this.time(idNote)
                 this.thirdCol.push(this.secondCol[idNote])
                 this.secondCol.splice(idNote, 1)
+                this.save()
             }
         })
     },
@@ -72,13 +79,11 @@ Vue.component('column1', {
     methods: {
         save() {
             localStorage.firstCol = JSON.stringify(this.firstCol)
-            localStorage.secondCol = JSON.stringify(this.secondCol)
-            localStorage.thirdCol = JSON.stringify(this.thirdCol)
         },
     },
     template: `
      <div>
-        <note v-for="(note, index) in firstCol" :firstCol="firstCol" :key="note.key" :idNote="index" :note="note">
+        <note v-for="(note, index) in firstCol" @save="save()" :firstCol="firstCol" :key="note.key" :idNote="index" :note="note">
             
         </note>
     </div>
@@ -150,6 +155,7 @@ Vue.component('note', {
                 }
                 this.note.tasks.push(createTask);
                 this.taskTitle = '';
+                this.$emit('save')
             }
         },
     },
