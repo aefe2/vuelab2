@@ -31,10 +31,14 @@ Vue.component('container', {
             this.thirdCol = JSON.parse(localStorage.thirdCol)
         }
         eventBus.$on('move-column2', (idNote, note) => {
-            if (this.firstCol[idNote].doneNum >= 50) {
-                this.secondCol.push(this.firstCol[idNote])
-                this.firstCol.splice(idNote, 1)
-                this.save()
+            if (this.secondCol.length < 5) {
+                if (this.firstCol[idNote].doneNum >= 50) {
+                    this.secondCol.push(this.firstCol[idNote])
+                    this.firstCol.splice(idNote, 1)
+                    this.save()
+                }
+            } else {
+
             }
         });
         eventBus.$on('move-column3', (idNote, note) => {
@@ -145,6 +149,9 @@ Vue.component('note', {
         },
         idNote: {
             type: Number,
+        },
+        secondCol: {
+            type: Array
         }
     },
     data() {
@@ -225,7 +232,7 @@ Vue.component('task', {
         <span class="task-title">{{ task.taskTitle }}</span>
         <button :class="{done: task.isDone}" 
         class="done-btn" 
-        :disabled="task.isDone" 
+        :disabled="task.isDone"
         @click="updateCounter()">Done</button>
     </div>`,
 })
